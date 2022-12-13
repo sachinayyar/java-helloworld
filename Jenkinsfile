@@ -30,7 +30,7 @@ pipeline
                                 {
                                     openshift.newBuild("--name=image"."--docker-image=redhat.registry.io/redhat-openjdk-18/openjdk18-openshift","--binary")
                                 }
-                                openshift.selector("bc","image").startbuild("--from-file=target/jb-hello-world-maven-0.2.0.jar","--follow")
+                                openshift.selector("bc","image").startbuild("--from-file=target/jb-hello-world-maven-0.2.0-shaded.jar","--follow")
                             }
                         }
                     }
