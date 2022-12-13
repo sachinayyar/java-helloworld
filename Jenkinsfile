@@ -34,5 +34,32 @@ pipeline
                              }
                       }
                   }
+          
+          
+          
+       
+          
+          
+          
+          stage('Deploy') {
+      steps {
+        echo 'Deploying....'
+        script {
+
+          openshift.withCluster() { 
+            openshift.withProject("basic-java") { 
+              def deployment = openshift.selector("dc", "codelikethewind") 
+     
+              if(!deployment.exists()){ 
+                 openshift.newApp('codelikethewind', "--as-deployment-config").narrow('svc').expose() 
+                  } 
+    
+                      timeout(5) { 
+                           openshift.selector("dc", "codelikethewind").related('pods').untilEach(1) { 
+                           return (it.object().status.phase == "Running") 
+                                 } 
+                            } 
+                         } 
+                      }
          }
 }
