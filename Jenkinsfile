@@ -14,11 +14,17 @@ pipeline
                     sh 'mvn clean package'
                 }
             }
-                  stage('Create Container Image') {
-                    steps {
+            
+            
+            
+                  stage('Create Container Image') 
+                  {
+                    steps 
+                    {
                          echo 'Create Container Image..'
         
-                        script {
+                        script 
+                        {
 
                           openshift.withCluster() { 
                                openshift.withProject("basic-java") {
@@ -29,18 +35,14 @@ pipeline
                           openshift.newBuild("--name=image", "--docker-image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift", "--binary") 
                              } 
     
-                       openshift.selector("bc", "image").startBuild("--from-file=target/jb-hello-world-maven-0.2.0-SNAPSHOT.jar", "--follow") } }
+                       openshift.selector("bc", "image").startBuild("--from-file=target/jb-hello-world-maven-0.2.0-SNAPSHOT.jar", "--follow") 
+                                   
+                               } }
 
                              }
                       }
                   }
-          
-          
-          
-       
-          
-          
-          
+        
           stage('Deploy') {
       steps {
         echo 'Deploying....'
@@ -63,4 +65,10 @@ pipeline
                       }
         }
          }
+                }
 }
+
+}
+
+
+
