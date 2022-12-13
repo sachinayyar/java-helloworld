@@ -50,14 +50,14 @@ pipeline
 
           openshift.withCluster() { 
             openshift.withProject("basic-java") { 
-              def deployment = openshift.selector("dc", "codelikethewind") 
+              def deployment = openshift.selector("dc", "image-dc") 
      
               if(!deployment.exists()){ 
-                 openshift.newApp('codelikethewind', "--as-deployment-config").narrow('svc').expose() 
+                 openshift.newApp('image', "--as-deployment-config").narrow('svc').expose() 
                   } 
     
                       timeout(5) { 
-                           openshift.selector("dc", "codelikethewind").related('pods').untilEach(1) { 
+                           openshift.selector("dc", "image-dc").related('pods').untilEach(1) { 
                            return (it.object().status.phase == "Running") 
                                  } 
                             } 
