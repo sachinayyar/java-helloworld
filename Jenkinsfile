@@ -32,7 +32,7 @@ pipeline
                              def buildConfigExists = openshift.selector("bc", "java-helloworld").exists() 
     
                           if(!buildConfigExists){ 
-                          openshift.newBuild("--name=java-helloworld", "--docker-image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift", "--binary") 
+                          openshift.newBuild("--name=java-helloworld", "--docker-image=registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7", "--binary") 
                              } 
     
                        openshift.selector("bc", "java-helloworld").startBuild("--from-file=target/jb-hello-world-maven-0.2.0-SNAPSHOT.jar", "--follow") 
