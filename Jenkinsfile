@@ -29,13 +29,13 @@ pipeline
                           openshift.withCluster() { 
                                openshift.withProject("basic-java") {
   
-                             def buildConfigExists = openshift.selector("bc", "image").exists() 
+                             def buildConfigExists = openshift.selector("bc", "java-helloworld").exists() 
     
                           if(!buildConfigExists){ 
-                          openshift.newBuild("--name=image", "--docker-image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift", "--binary") 
+                          openshift.newBuild("--name=java-helloworld", "--docker-image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift", "--binary") 
                              } 
     
-                       openshift.selector("bc", "image").startBuild("--from-file=target/jb-hello-world-maven-0.2.0-SNAPSHOT.jar", "--follow") 
+                       openshift.selector("bc", "java-helloworld").startBuild("--from-file=target/jb-hello-world-maven-0.2.0-SNAPSHOT.jar", "--follow") 
                                    
                                } }
 
@@ -50,14 +50,14 @@ pipeline
 
           openshift.withCluster() { 
             openshift.withProject("basic-java") { 
-              def deployment = openshift.selector("dc", "image-dc") 
+              def deployment = openshift.selector("dc", "java-helloworld") 
      
               if(!deployment.exists()){ 
-                 openshift.newApp('image', "--as-deployment-config").narrow('svc').expose() 
+                 openshift.newApp('java-helloworld', "--as-deployment-config").narrow('svc').expose() 
                   } 
     
                       timeout(5) { 
-                           openshift.selector("dc", "image-dc").related('pods').untilEach(1) { 
+                           openshift.selector("dc", "java-helloworld").related('pods').untilEach(1) { 
                            return (it.object().status.phase == "Running") 
                                  } 
                             } 
